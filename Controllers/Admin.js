@@ -56,6 +56,8 @@ export const Editproduct=async(req,res)=>{
   }
 }
 
+
+
 export const Deleteproduct=async(req,res)=>{
     try {
          // connect the database
