@@ -111,3 +111,95 @@ export const Getproducts = async (req, res) => {
     });
   }
 };
+
+
+/*Add to cart */
+
+export const Addtocart=async(req,res)=>{
+    console.log(req);
+    try {
+        // connect the database
+
+   let client = await mongoClient.connect(URL);
+
+   //select the db
+   let db = client.db("shop");
+
+   //select the collection and perform the action
+   console.log("-------------------------------------------------------------------");
+   
+   let product = await db.collection("products").findOne({_id: mongodb.ObjectId(req.body.values)});
+   console.log(product);
+   req.body.values=product.values;
+   req.body.values["cartid"]=product._id;
+  console.log(req.body);
+    let data = await db.collection("cart").insertOne(req.body);
+
+   //close the connection
+   await client.close();
+
+   res.json({
+     message: "Product Added",
+   });
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({
+           message: "something went wrong"
+       })
+    }
+}
+
+/*Get all items in cart*/
+
+export const Getcartproducts = async (req, res) => {
+    try {
+    
+      //conect the database
+      let client = await mongoClient.connect(URL);
+  
+      //select the db
+      let db = client.db("shop");
+  
+      //select connect action and perform action
+      let data = await db.collection("cart").find({userid:req.body.userid}).toArray();
+  
+      //close the connection
+      client.close();
+  
+      res.json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "something went wrong",
+      });
+    }
+  };
+
+  /*Remove cart product*/
+
+  export const Removecartproduct = async (req, res) => {
+    try {
+    
+      //conect the database
+      let client = await mongoClient.connect(URL);
+  
+      //select the db
+      let db = client.db("shop");
+
+      //select connect action and perform action
+      let data = await db.collection("cart").findOneAndDelete({_id: mongodb.ObjectId(req.params.id)})
+      
+  
+      //close the connection
+      client.close();
+  
+      res.json({
+          message:"sucess"
+      })
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "something went wrong",
+      });
+    }
+  };

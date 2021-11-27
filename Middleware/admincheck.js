@@ -1,22 +1,23 @@
 import mongodb from 'mongodb';
 const mongoClient=mongodb.MongoClient;
-const URL="//localhost:27017";
+const URL="mongodb://localhost:27017/shop";
 
 
 
  const admincheck = async (req,res,next)=>{
    
-    req.body.userid = req.userid;
+    req.body.userid = req.body.userid;
     try {
         // connect the database
     
         let client =await mongoClient.connect(URL);
         let db= client.db("shop");
-        let value=db.collection('users').findOne({email:req.body.email});
         
-        // console.log(check[0].admin);
+        let check=await db.collection('users').findOne({_id: mongodb.ObjectId(req.body.userid)});
+        
+        console.log(check.admin);
     
-        let value=check[0].admin
+        let value=check.admin
         if(value){
             
          await client.close();
@@ -33,3 +34,5 @@ const URL="//localhost:27017";
       })
       }
 }
+
+export default admincheck
