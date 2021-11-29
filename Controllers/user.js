@@ -343,8 +343,6 @@ export const Addtoorder = async (req, res) => {
             putdata.address="8/144 kanaku pillai kadu";
             putdata.status="Ordered";
             let order=await db.collection("order").insertOne(putdata);
-            
-          console.log(putdata);
         }
   
          
@@ -371,6 +369,34 @@ export const Addtoorder = async (req, res) => {
     } catch (error) {
       console.log(error);
       res.status(404).json({
+        message: "something went wrong",
+      });
+    }
+  };
+
+
+  /*view  order*/
+  export const Getorderproducts = async (req, res) => {
+    try {
+      //conect the database
+      let client = await mongoClient.connect(URL);
+  
+      //select the db
+      let db = client.db("shop");
+  
+      //select connect action and perform action
+      let data = await db
+        .collection("order")
+        .find({ userid: req.body.userid })
+        .toArray();
+  
+      //close the connection
+      client.close();
+  
+      res.json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
         message: "something went wrong",
       });
     }
