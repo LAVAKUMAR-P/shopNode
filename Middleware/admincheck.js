@@ -15,7 +15,7 @@ const URL="mongodb://localhost:27017/shop";
         
         let check=await db.collection('users').findOne({_id: mongodb.ObjectId(req.body.userid)});
         
-        console.log(check.admin);
+       
     
         let value=check.admin
         if(value){
