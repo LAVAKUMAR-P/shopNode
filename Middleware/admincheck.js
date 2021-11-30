@@ -5,17 +5,16 @@ const URL="mongodb://localhost:27017/shop";
 
 
  const admincheck = async (req,res,next)=>{
-   
-    req.body.userid = req.body.userid;
+  
     try {
         // connect the database
-    
+         console.log(req.body.userid);
         let client =await mongoClient.connect(URL);
         let db= client.db("shop");
         
         let check=await db.collection('users').findOne({_id: mongodb.ObjectId(req.body.userid)});
         
-       
+       console.log(check);
     
         let value=check.admin
         if(value){
