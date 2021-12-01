@@ -2,6 +2,33 @@ import mongodb from 'mongodb';
 const mongoClient=mongodb.MongoClient;
 const URL="mongodb://localhost:27017/shop";
 
+
+
+
+export const Getproductsbyadmin = async (req, res) => {
+  try {
+    
+    //conect the database
+    let client = await mongoClient.connect(URL);
+
+    //select the db
+    let db = client.db("shop");
+
+    //select connect action and perform action
+    let data = await db.collection("products").find().toArray();
+
+    //close the connection
+    client.close();
+
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "something went wrong",
+    });
+  }
+};
+
 export const Registerproduct=async(req,res)=>{
      try {
          // connect the database

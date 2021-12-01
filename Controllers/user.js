@@ -33,7 +33,7 @@ export const Registeruser = async (req, res) => {
       });
     } else {
       console.log("mail id already used");
-      res.json({
+      res.status(404).json({
         message: "Email already Registered",
       });
     }
@@ -88,7 +88,7 @@ export const Login = async (req, res) => {
 
 export const Getproducts = async (req, res) => {
   try {
-    console.log(req.body);
+    
     //conect the database
     let client = await mongoClient.connect(URL);
 
@@ -101,7 +101,7 @@ export const Getproducts = async (req, res) => {
     //close the connection
     client.close();
 
-    res.json(data);
+    res.status(200).json(data);
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -340,7 +340,7 @@ export const Addtoorder = async (req, res) => {
             putdata.userid=cart.userid;
             putdata.values=cart.values;
             putdata.cartid=cart.cartid;
-            putdata.address="8/144 kanaku pillai kadu";
+            putdata.address=req.body.address;
             putdata.status="Ordered";
             let order=await db.collection("order").insertOne(putdata);
         }
@@ -394,6 +394,47 @@ export const Addtoorder = async (req, res) => {
       client.close();
   
       res.json(data);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "something went wrong",
+      });
+    }
+  };
+
+  /*Get search product*/
+
+  export const Getsearchproducts = async (req, res) => {
+    try {
+      //conect the database
+      let client = await mongoClient.connect(URL);
+  
+      //select the db
+      let db = client.db("shop");
+  
+      //select connect action and perform action
+      let result = await db
+        .collection("products")
+        .find()
+        .toArray();
+      let data=[]
+        if(result.length>0){
+          for await (const cart of result) {
+            let value=cart.values["title"]
+            if(value.toLowerCase().includes(req.params.search.toLowerCase())){
+              console.log(cart);
+              data.push(cart)
+            }
+              
+          }
+
+        }
+
+      console.log(data);
+      //close the connection
+      client.close();
+  
+      res.status(200).json(data);
     } catch (error) {
       console.log(error);
       res.status(500).json({

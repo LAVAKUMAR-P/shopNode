@@ -1,12 +1,14 @@
 import express  from "express";
-import { Allusersbyadmin, Deleteproduct, Editorder, Editproduct, GetorderByadmin, GetorderByadminid, Getproductsbyid, makeadmin, Registerproduct, removeadmin } from "../Controllers/Admin.js";
-import { Addtocart, Addtoorder, Decrementcart, Getcartproducts, Getorderproducts, Getproducts, Incrementcart, Login, Registeruser, Removecartproduct } from "../Controllers/user.js";
+import { Allusersbyadmin, Deleteproduct, Editorder, Editproduct, GetorderByadmin, GetorderByadminid, Getproductsbyadmin, Getproductsbyid, makeadmin, Registerproduct, removeadmin } from "../Controllers/Admin.js";
+import { Addtocart, Addtoorder, Decrementcart, Getcartproducts, Getorderproducts, Getproducts, Getsearchproducts, Incrementcart, Login, Registeruser, Removecartproduct } from "../Controllers/user.js";
 import admincheck from "../Middleware/admincheck.js";
 import authenticate from "../Middleware/check.js";
 
 const router=express.Router();
 
 router.get("/allproducts",Getproducts);
+router.get("/searchproduct/:search",Getsearchproducts);
+router.get("/allproductsbyadmin",[authenticate],[admincheck],Getproductsbyadmin);
 router.post("/register",Registeruser);
 router.post("/login",Login);
 router.post("/orderproduct",[authenticate],Addtoorder);
