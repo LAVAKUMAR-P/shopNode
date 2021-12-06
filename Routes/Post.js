@@ -1,6 +1,6 @@
 import express  from "express";
 import { Allusersbyadmin, Deleteproduct, Editorder, Editproduct, GetorderByadmin, GetorderByadminid, Getproductsbyadmin, Getproductsbyid, makeadmin, Registerproduct, removeadmin } from "../Controllers/Admin.js";
-import { Addtocart, Addtoorder, Decrementcart, Editaddress, Forgetpassword, Getcartproducts, Getorderproducts, Getproducts, Getsearchproducts, Getuser, Incrementcart, Login, Razorpaypm, Registeruser, Removecartproduct, Resetpassword, Verification } from "../Controllers/user.js";
+import { Addtocart, Addtoorder, Decrementcart, Editaddress, Forgetpassword, Getcartproducts, Getorderproducts, Getproducts, Getsearchproducts, Getuser, Incrementcart, Login, Razorpaypm, Registeruser, Removecartproduct, Resetpassword, Verification } from "../Controllers/User.js";
 import admincheck from "../Middleware/admincheck.js";
 import authenticate from "../Middleware/check.js";
 
