@@ -6,7 +6,7 @@ import crypto from 'crypto'
 import * as fs from 'fs';
 import shortid from 'shortid'
 import Razorpay from 'razorpay';
-import sendEmail from "../Utils/Email";
+import sendEmail from "../Utils/Email.js";
 
 dotenv.config();
 
