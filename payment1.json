@@ -1,0 +1,58 @@
+{
+    "entity": "event",
+    "account_id": "acc_ISaEgUKgGcEYEk",
+    "event": "payment.captured",
+    "contains": [
+        "payment"
+    ],
+    "payload": {
+        "payment": {
+            "entity": {
+                "id": "pay_ITIC4ztcp1PZUh",
+                "entity": "payment",
+                "amount": 800,
+                "currency": "INR",
+                "status": "captured",
+                "order_id": "order_ITIBQLvFzeEWsd",
+                "invoice_id": null,
+                "international": false,
+                "method": "card",
+                "amount_refunded": 0,
+                "refund_status": null,
+                "captured": true,
+                "description": "Thank you .",
+                "card_id": "card_ITIC52O9Lknz0y",
+                "card": {
+                    "id": "card_ITIC52O9Lknz0y",
+                    "entity": "card",
+                    "name": "Lavakumar",
+                    "last4": "1111",
+                    "network": "Visa",
+                    "type": "debit",
+                    "issuer": null,
+                    "international": false,
+                    "emi": false,
+                    "sub_type": "consumer"
+                },
+                "bank": null,
+                "wallet": null,
+                "vpa": null,
+                "email": "lavakumar16000@gmail.com",
+                "contact": "+917339238342",
+                "notes": [],
+                "fee": 16,
+                "tax": 0,
+                "error_code": null,
+                "error_description": null,
+                "error_source": null,
+                "error_step": null,
+                "error_reason": null,
+                "acquirer_data": {
+                    "auth_code": "513954"
+                },
+                "created_at": 1638597896
+            }
+        }
+    },
+    "created_at": 1638597900
+}

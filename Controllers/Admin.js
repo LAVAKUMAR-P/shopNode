@@ -65,7 +65,7 @@ export const Editproduct=async(req,res)=>{
 
     //select the db
     let db = client.db("shop");
-    console.log(req.body);
+    // console.log(req.body);
     //select the collection and perform the action
     let data = await db.collection("products").findOneAndUpdate({_id: mongodb.ObjectId(req.params.id)},{$set:req.body})
     
@@ -88,15 +88,15 @@ export const Editproduct=async(req,res)=>{
 export const Deleteproduct=async(req,res)=>{
     try {
          // connect the database
-         console.log(req.params.id,"by deldete");
+        //  console.log(req.params.id,"by deldete");
     let client = await mongoClient.connect(URL);
 
     //select the db
     let db = client.db("shop");
-    console.log(req.params.id +"delete product");
+    // console.log(req.params.id +"delete product");
     //select the collection and perform the action
     let data = await db.collection("products").findOneAndDelete({_id: mongodb.ObjectId(req.params.id)})
-   console.log("Deleted");
+  //  console.log("Deleted");
     //close the connection
     await client.close();
 
@@ -116,7 +116,7 @@ export const Deleteproduct=async(req,res)=>{
 export const Getproductsbyid = async (req, res) => {
     
     try {
-      console.log(req.body);
+      // console.log(req.body);
       //conect the database
       let client = await mongoClient.connect(URL);
   
@@ -201,15 +201,15 @@ export const GetorderByadminid = async (req, res) => {
   
       //select the db
       let db = client.db("shop");
-      console.log("-----------------------------------------------------------------------");
-      console.log(req.body);
+      // console.log("-----------------------------------------------------------------------");
+      // console.log(req.body);
 
       let data = await db
         .collection("order")
         .findOne({_id: mongodb.ObjectId(req.params.id)})
         data.status=req.body.status
       //select the collection and perform the action
-      console.log(data);
+      // console.log(data);
       let post = await db.collection("order").findOneAndUpdate({_id: mongodb.ObjectId(req.params.id)},{$set: data})
       
       //close the connection
@@ -319,3 +319,5 @@ export const removeadmin=async(req,res)=>{
        })
     }
 }
+
+
