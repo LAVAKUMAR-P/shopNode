@@ -23,7 +23,7 @@ const URL =process.env.CONNECTION_URL ;
 /*Register user*/
 
 export const Registeruser = async (req, res) => {
-  req.body.admin = true;
+  req.body.admin = false;
   try {
     //connect db
     let client = await mongoClient.connect(URL);
@@ -533,7 +533,7 @@ export const Razorpaypm =async (req, res) => {
             let price =(cart.values.price*cart.values.count)
             amount=amount+price
         }
-
+     
         const options = {
           amount: amount * 100,
           currency,
@@ -543,7 +543,7 @@ export const Razorpaypm =async (req, res) => {
   
       const response = await razorpay.orders.create(options)
       //     console.log("------Sentpayment to frount end-----------");
-      // console.log(response)
+      console.log(response)
       res.json({
         id: response.id,
         currency: response.currency,
@@ -589,9 +589,10 @@ export const Addtoorder = async (req, res) => {
       //payment confirm
 
       let ok = await db.collection("payment").findOne({paymentid:req.body.paymentid});
-      
-
-     if((data.length>0) && (!ok.used)){
+      console.log(ok);
+      let count=0
+    if(ok !== null){
+      if((data.length>0) && (!ok.used)){
         for await (const cart of data) {
             let putdata ={};
             putdata.userid=cart.userid;
@@ -606,7 +607,7 @@ export const Addtoorder = async (req, res) => {
          await db.collection("cart").deleteMany({ userid:req.body.userid});
 
          ok.used=true;
-        //  console.log(ok);
+        
 
         let update= await db.collection("payment").findOneAndUpdate({ _id: mongodb.ObjectId(ok._id) },{$set:{used: true,userid:req.body.userid}})
          console.log("payment updated");
@@ -626,7 +627,14 @@ export const Addtoorder = async (req, res) => {
           // console.log("Without put data");
           await client.close();
       }
-       
+    }else{
+      res.json({
+        message: "Internal process error kindly contact us",
+      });
+      // console.log("Without put data");
+      await client.close();
+
+    }   
     } catch (error) {
       console.log(error);
       res.status(404).json({
