@@ -38,6 +38,8 @@ export const Registerproduct=async(req,res)=>{
 
     let client = await mongoClient.connect(URL);
 
+    console.log("Db connected");
+
     //select the db
     let db = client.db("shop");
 
