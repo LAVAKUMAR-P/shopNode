@@ -7,15 +7,20 @@ const app=express();
 
 
 
+// const razorpay = new Razorpay({
+// 	key_id: 'rzp_test_rFkV7RYeBZOzCE',
+// 	key_secret: 'X4BxfMI96eCE5Y9XCwAXbfC2'
+// })
 
+// app.use(bodyParser.json())
 
-app.use(cors(
-    {
-        origin:"*",
-    }
-))
+app.use(
+    cors({
+      origin: "*",
+    })
+  );
 
-app.use(bodyParser.json())
+app.use(express.json());
 
 
 
