@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const URL=process.env.CONNECTION_URL;
-
+console.log(URL);
 
 
 
@@ -35,7 +35,7 @@ export const Getproductsbyadmin = async (req, res) => {
 export const Registerproduct=async(req,res)=>{
      try {
          // connect the database
-
+         console.log("Db connecting");
     let client = await mongoClient.connect(URL);
 
     console.log("Db connected");
