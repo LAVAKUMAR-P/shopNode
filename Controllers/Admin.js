@@ -1,6 +1,9 @@
 import mongodb from 'mongodb';
 const mongoClient=mongodb.MongoClient;
-const URL="mongodb://localhost:27017/shop";
+import dotenv from "dotenv";
+dotenv.config();
+
+const URL=process.env.CONNECTION_URL;
 
 
 
