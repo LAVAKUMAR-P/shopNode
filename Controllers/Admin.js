@@ -46,8 +46,8 @@ export const Registerproduct=async(req,res)=>{
     //close the connection
     await client.close();
 
-    res.json({
-      message: "Product not created",
+    res.status(200).json({
+      message: "Product created",
     });
      } catch (error) {
          console.log(error);
@@ -72,7 +72,7 @@ export const Editproduct=async(req,res)=>{
     //close the connection
     await client.close();
 
-    res.json({
+    res.status(200).json({
       message: "product updated",
     });
   } catch (error) {
@@ -100,7 +100,7 @@ export const Deleteproduct=async(req,res)=>{
     //close the connection
     await client.close();
 
-    res.json({
+    res.status(200).json({
       message: "product Deleted",
     });
 
@@ -129,7 +129,7 @@ export const Getproductsbyid = async (req, res) => {
       //close the connection
       client.close();
   
-      res.json(data);
+      res.status(200).json(data);
     } catch (error) {
       console.log(error);
       res.status(500).json({
@@ -156,7 +156,7 @@ export const Getproductsbyid = async (req, res) => {
       //close the connection
       client.close();
   
-      res.json(data);
+      res.status(200).json(data);
     } catch (error) {
       console.log(error);
       res.status(500).json({
@@ -309,7 +309,7 @@ export const removeadmin=async(req,res)=>{
    //close the connection
    await client.close();
 
-   res.json({
+   res.status(200).json({
      message: "User access changed",
    });
     } catch (error) {
