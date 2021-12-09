@@ -131,7 +131,7 @@ export const GoogleRegister = async (req, res) => {
     });
   } else {
     // console.log("mail id already used");
-    res.status(404).json({
+    res.status(409).json({
       message: "Email already Registered",
     });
   }
