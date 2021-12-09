@@ -7,9 +7,10 @@ import * as fs from 'fs';
 import shortid from 'shortid'
 import Razorpay from 'razorpay';
 import sendEmail from "../Utils/Email.js";
+import {OAuth2Client} from "google-auth-library"
 
 dotenv.config();
-
+const Googleclient = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
 
 const razorpay = new Razorpay({
 	key_id:process.env.key_id,
@@ -89,6 +90,54 @@ export const Login = async (req, res) => {
         message: "Username/Password is incorrect",
       });
     }
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+/*Google Register user*/
+
+export const GoogleRegister = async (req, res) => {
+  // console.log("login");
+  try {
+    const { token } = req.body;
+  const ticket = await Googleclient.verifyIdToken({
+    idToken: token,
+    audience: process.env.CLIENT_ID,
+  });
+  console.log("--------------------------------------");
+  console.log(ticket);
+  console.log("---------------------------------------");
+  const { given_name,family_name, email, picture } = ticket.getPayload();
+  
+  res.status(200).json({ given_name, family_name, email, picture });
+
+  // //connect db
+  // let client = await mongoClient.connect(URL);
+  // //select db
+  // let db = client.db("shop");
+  // let check = await db.collection("users").findOne({ email: email });
+
+  // if (!check) {
+  //   //post db
+  //   let data = await db.collection("users").insertOne({firstName:given_name,lastName:family_name,email,admin:false});
+  //   //close db
+  //   await client.close();
+  //   res.json({
+  //     message: "user registered",
+  //   });
+  // } else {
+  //   // console.log("mail id already used");
+  //   res.status(404).json({
+  //     message: "Email already Registered",
+  //   });
+  // }
+
+  
+  
   } catch (error) {
     console.log(error);
     res.status(404).json({
