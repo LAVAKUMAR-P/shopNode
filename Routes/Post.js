@@ -1,6 +1,6 @@
 import express  from "express";
 import { Allusersbyadmin, Deleteproduct, Editorder, Editproduct, GetorderByadmin, GetorderByadminid, Getproductsbyadmin, Getproductsbyid, makeadmin, Registerproduct, removeadmin } from "../Controllers/Admin.js";
-import { Addtocart, Addtoorder, Decrementcart, Editaddress, Forgetpassword, Getcartproducts, Getorderproducts, Getproducts, Getsearchproducts, Getuser,GoogleRegister, Incrementcart, Login, Razorpaypm, Registeruser, Removecartproduct, Resetpassword, Verification } from "../Controllers/User.js";
+import { Addtocart, Addtoorder, Decrementcart, Editaddress, Forgetpassword, Getcartproducts, Getorderproducts, Getproducts, Getsearchproducts, Getuser,GoogleLogin,GoogleRegister, Incrementcart, Login, Razorpaypm, Registeruser, Removecartproduct, Resetpassword, Verification } from "../Controllers/User.js";
 import admincheck from "../Middleware/admincheck.js";
 import authenticate from "../Middleware/check.js";
 
@@ -12,6 +12,7 @@ router.get("/allproductsbyadmin",[authenticate],[admincheck],Getproductsbyadmin)
 router.get("/getuser",[authenticate],Getuser);
 router.post("/register",Registeruser);
 router.post("/registerbygoogle",GoogleRegister);
+router.post("/loginbygoogle",GoogleLogin);
 router.post("/razorpay",[authenticate],Razorpaypm);
 router.post('/verification',Verification);
 router.post("/login",Login);

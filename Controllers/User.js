@@ -108,36 +108,38 @@ export const GoogleRegister = async (req, res) => {
     idToken: token,
     audience: process.env.CLIENT_ID,
   });
-  console.log("--------------------------------------");
-  console.log(ticket);
-  console.log("---------------------------------------");
-  const { given_name,family_name, email, picture } = ticket.getPayload();
-  
-  // res.status(200).json({ given_name, family_name, email, picture });
+  // console.log("--------------------------------------");
+  // console.log(ticket);
+  // console.log("---------------------------------------");
+  const { given_name,family_name, email, picture,email_verified } = ticket.getPayload();
+  if(email_verified){
+//connect db
+let client = await mongoClient.connect(URL);
+//select db
+let db = client.db("shop");
+let check = await db.collection("users").findOne({ email: email });
 
-  //connect db
-  let client = await mongoClient.connect(URL);
-  //select db
-  let db = client.db("shop");
-  let check = await db.collection("users").findOne({ email: email });
-
-  if (!check) {
-    //post db
-    let data = await db.collection("users").insertOne({firstName:given_name,lastName:family_name,email,picture,admin:false});
-    //close db
-    await client.close();
-    res.json({
-      message: "user registered",
-    });
-  } else {
-    // console.log("mail id already used");
-    res.status(409).json({
-      message: "Email already Registered",
+if (!check) {
+  //post db
+  let data = await db.collection("users").insertOne({firstName:given_name,lastName:family_name,email,picture,admin:false});
+  //close db
+  await client.close();
+  res.json({
+    message: "user registered",
+  });
+} else {
+  // console.log("mail id already used");
+  res.status(409).json({
+    message: "Email already Registered",
+  });
+}
+  }
+  else{
+    res.status(404).json({
+      message: "Something went wrong",
     });
   }
 
-  
-  
   } catch (error) {
     console.log(error);
     res.status(404).json({
@@ -146,6 +148,46 @@ export const GoogleRegister = async (req, res) => {
   }
 };
 
+
+/*Google Login */
+
+export const GoogleLogin=async(req,res)=>{
+  try {
+    const { token } = req.body;
+    const ticket = await Googleclient.verifyIdToken({
+      idToken: token,
+      audience: process.env.CLIENT_ID,
+    });
+    // console.log("--------------------------------------");
+    // console.log(ticket);
+    // console.log("---------------------------------------");
+    const { email,email_verified } = ticket.getPayload();
+    
+    if(email_verified){
+      let client = await mongoClient.connect(URL);
+    let db = client.db("shop");
+    // console.log(req.body.email);
+    let user = await db.collection("users").findOne({ email: email });
+
+    let jwttoken = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    // console.log(user.Admin);
+    res.json({
+      message: true,
+      token:jwttoken,
+      unconditional: user.admin,
+    });
+    }else{
+      res.status(404).json({
+        message: "Username/Password is incorrect",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({
+      message: "Internal server error",
+    });
+  }
+}
 
 /*Forget password */
 
