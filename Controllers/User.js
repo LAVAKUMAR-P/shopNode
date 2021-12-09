@@ -113,28 +113,28 @@ export const GoogleRegister = async (req, res) => {
   console.log("---------------------------------------");
   const { given_name,family_name, email, picture } = ticket.getPayload();
   
-  res.status(200).json({ given_name, family_name, email, picture });
+  // res.status(200).json({ given_name, family_name, email, picture });
 
-  // //connect db
-  // let client = await mongoClient.connect(URL);
-  // //select db
-  // let db = client.db("shop");
-  // let check = await db.collection("users").findOne({ email: email });
+  //connect db
+  let client = await mongoClient.connect(URL);
+  //select db
+  let db = client.db("shop");
+  let check = await db.collection("users").findOne({ email: email });
 
-  // if (!check) {
-  //   //post db
-  //   let data = await db.collection("users").insertOne({firstName:given_name,lastName:family_name,email,admin:false});
-  //   //close db
-  //   await client.close();
-  //   res.json({
-  //     message: "user registered",
-  //   });
-  // } else {
-  //   // console.log("mail id already used");
-  //   res.status(404).json({
-  //     message: "Email already Registered",
-  //   });
-  // }
+  if (!check) {
+    //post db
+    let data = await db.collection("users").insertOne({firstName:given_name,lastName:family_name,email,picture,admin:false});
+    //close db
+    await client.close();
+    res.json({
+      message: "user registered",
+    });
+  } else {
+    // console.log("mail id already used");
+    res.status(404).json({
+      message: "Email already Registered",
+    });
+  }
 
   
   
