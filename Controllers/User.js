@@ -121,7 +121,7 @@ let check = await db.collection("users").findOne({ email: email });
 
 if (!check) {
   //post db
-  let data = await db.collection("users").insertOne({firstName:given_name,lastName:family_name,email,picture,admin:false});
+  let data = await db.collection("users").insertOne({firstName:given_name,lastName:family_name,email,picture,address:"Kindly add your address by using Edit",admin:false});
   //close db
   await client.close();
   res.json({
