@@ -47,7 +47,7 @@ export const Registeruser = async (req, res) => {
       });
     } else {
       // console.log("mail id already used");
-      res.status(404).json({
+      res.status(409).json({
         message: "Email already Registered",
       });
     }
@@ -81,12 +81,12 @@ export const Login = async (req, res) => {
           unconditional: user.admin,
         });
       } else {
-        res.status(404).json({
+        res.status(401).json({
           message: "Username/Password is incorrect",
         });
       }
     } else {
-      res.status(404).json({
+      res.status(401).json({
         message: "Username/Password is incorrect",
       });
     }
