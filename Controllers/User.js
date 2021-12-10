@@ -621,26 +621,34 @@ export const Razorpaypm =async (req, res) => {
 
       if(data.length>0){
         for await (const cart of data) {
+          let check = await db.collection("products").findOne({_id: mongodb.ObjectId(cart.cartid)})
+          if(check.values.quantity >= cart.values.count){
             let price =(cart.values.price*cart.values.count)
             amount=amount+price
+          }
         }
      
-        const options = {
-          amount: amount * 100,
-          currency,
-          receipt: shortid.generate(),
-          payment_capture 
+        if(amount >0){
+          const options = {
+            amount: amount * 100,
+            currency,
+            receipt: shortid.generate(),
+            payment_capture 
+          }
+    
+        const response = await razorpay.orders.create(options)
+        //     console.log("------Sentpayment to frount end-----------");
+        console.log(response)
+        res.json({
+          id: response.id,
+          currency: response.currency,
+          amount: response.amount
+        })
+        }else{
+          res.status(422).json({
+            message: "sorry currently product not available/remove and add Again",
+          });
         }
-  
-      const response = await razorpay.orders.create(options)
-      //     console.log("------Sentpayment to frount end-----------");
-      console.log(response)
-      res.json({
-        id: response.id,
-        currency: response.currency,
-        amount: response.amount
-      })
-
       await client.close();
       } else{
         res.json({
@@ -692,6 +700,11 @@ export const Addtoorder = async (req, res) => {
             putdata.address=user.address;
             putdata.status="Ordered";
             let order=await db.collection("order").insertOne(putdata);
+            let newvalue=await db.collection("products").findOne({ _id: mongodb.ObjectId(cart.cartid) });
+            console.log(newvalue.values.quantity,cart.values.count);
+            newvalue.values.quantity=newvalue.values.quantity-cart.values.count;
+            console.log(newvalue.values.quantity);
+            let updates= await db.collection("products").findOneAndUpdate({ _id: mongodb.ObjectId(cart.cartid) },{$set:{values: newvalue.values}})
         }
   
          
